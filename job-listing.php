@@ -41,6 +41,8 @@ $listings = [
         'tags' => ['PHP', 'Node.js', 'MySQL']
     ]
 ];
+
+$formatSalary = fn($salary) => number_format($salary);
 ?>
 
 <!DOCTYPE html>
@@ -49,24 +51,51 @@ $listings = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+
+
+    </script>
+
     <title>Job Listings</title>
 </head>
 
-<body class="bg-slate-100">
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
 
+    h2 {
+        font-family: 'Roboto', sans-serif;
+    }
+</style>
+
+<body class="bg-slate-100">
 
     <header class="bg-slate-800 text-slate-100 p-4 shadow">
         <h1 class="text-2xl font-semibold">Job Listings</h1>
     </header>
 
-    
     <div class="p-4">
-        <?php foreach ($listings as $index): ?>
+        <?php foreach ($listings as $index => $job) : ?>
             <div class="mb-4">
                 <div
                     class="
-                    <?php if ($index['id'] % 2 == 0) : ?>
+                    <?php if ($job['id'] % 2 == 0) : ?>
                         bg-blue-50 border border-blue-200
                     <?php else : ?>
                         bg-indigo-50 border border-indigo-200
@@ -74,34 +103,34 @@ $listings = [
                     rounded-xl shadow-sm p-5 transition-all duration-300 hover:shadow-md hover:-translate-y-[2px]">
 
                     <h2 class="text-xl font-semibold text-slate-800">
-                        <?= $index['title'] ?>
+                        <?= $job['title'] ?>
                     </h2>
 
                     <p class="text-slate-600 mt-2">
-                        <?= $index['description'] ?>
+                        <?= $job['description'] ?>
                     </p>
 
                     <ul class="mt-4 space-y-1 text-slate-700">
                         <li>
                             <strong class="text-slate-900">Salary:</strong>
-                            <?= '₱' . number_format($index['salary']) ?>
+                            <?= '$' . $formatSalary($job['salary']) ?>
                         </li>
 
                         <li>
                             <strong class="text-slate-900">Location:</strong>
-                            <?= $index['location'] ?>
-                            <?php if ($index['location'] === 'Bahay ni Harold'): ?>
+                            <?= $job['location'] ?>
+                            <?php if ($job['location'] === 'Bahay ni Harold'): ?>
                                 <span class="text-xs text-white bg-indigo-600 rounded-full px-2 py-1 ml-2">
                                     Local
                                 </span>
                             <?php endif; ?>
                         </li>
 
-                        <?php if (!empty($index['tags'])): ?>
+                        <?php if (!empty($job['tags'])): ?>
                             <li class="mt-2">
                                 <strong class="text-slate-900">Tags:</strong>
                                 <span class="text-slate-600">
-                                    <?= implode(', ', $index['tags']) ?>
+                                    <?= implode(', ', $job['tags']) ?>
                                 </span>
                             </li>
                         <?php endif; ?>
